@@ -1,0 +1,26 @@
+# One-shot maintenance workflow: rebuilds the annotated notebook and exports
+# its EDA figures from cnn-project.ipynb, then removes the old notebook.
+# This file and scripts/ are deleted once the restructure commit lands.
+name: Restructure repository
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restructure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rebuild notebook and export figures
+        run: python scripts/restructure.py
+      - name: Commit restructured notebook
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add notebooks figures
+          git rm -q cnn-project.ipynb
+          git rm -q -r scripts
+          git commit -m "refactor: restructure notebook with narrative sections and move to notebooks/" -m "Rebuild cnn-project.ipynb as notebooks/histopathologic-cancer-detection.ipynb: replace the placeholder title with a full introduction and table of contents, and add narrative markdown throughout — section intros, observations after each EDA step, a modeling search-space summary, and a results & discussion section diagnosing the validation collapse seen in the final training run. The Kaggle boilerplate cell is dropped; all analysis code and outputs are unchanged. Key EDA visualizations are exported to figures/ for the README. Remove the temporary restructure script." -m "Co-Authored-By: Claude <noreply@anthropic.com>"
+          git push
