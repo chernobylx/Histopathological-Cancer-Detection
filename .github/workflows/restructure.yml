@@ -3,13 +3,16 @@
 # This file and scripts/ are deleted once the restructure commit lands.
 name: Restructure repository
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - claude/portfolio-repo-structure-na3gpj
 
 permissions:
   contents: write
 
 jobs:
   restructure:
+    if: ${{ hashFiles('cnn-project.ipynb') != '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
