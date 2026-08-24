@@ -1,0 +1,16 @@
+# Core
+numpy
+pandas
+matplotlib
+seaborn
+Pillow
+tqdm
+
+# Modeling
+scikit-learn
+tensorflow>=2.16
+keras-tuner
+
+# Notebook environment
+jupyterlab
+ipykernel
